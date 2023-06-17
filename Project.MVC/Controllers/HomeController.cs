@@ -16,6 +16,29 @@ namespace Project.MVC.Controllers
         public IActionResult Index()
         {
             return View();
+
+
+        }
+
+        [HttpPost]
+        public IActionResult Index(string page)
+        {
+            if (string.IsNullOrEmpty(page))
+            {
+                return View();
+            }
+
+            if (page.Equals("makes", System.StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction("Index", "VehicleMakes");
+            }
+
+            if (page.Equals("models", System.StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction("Index", "VehicleModels");
+            }
+
+            return View();
         }
 
         public IActionResult Privacy()

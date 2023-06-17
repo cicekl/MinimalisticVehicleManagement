@@ -10,6 +10,8 @@ namespace Project.Service.Models
         public string Name { get; set; }
         [Required]
         public string Abrv { get; set; }
+ 
+        public List<VehicleModel>? Models { get; set; }
 
     }
 }

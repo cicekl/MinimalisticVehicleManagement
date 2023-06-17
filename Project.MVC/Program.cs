@@ -1,9 +1,11 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Ninject;
 using Project.MVC.DependencyInjection;
 using Project.MVC.Mapping;
 using Project.Service.DataAccess;
+using Project.Service.Services;
 using System.Runtime.Loader;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 var kernel = new StandardKernel();
 builder.Services.AddSingleton<IServiceProviderFactory<IServiceCollection>>(new NinjectServiceProviderFactory(kernel));
+builder.Services.AddScoped<IVehicleService, VehicleService>();
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json")
@@ -21,8 +24,9 @@ var mapperConfig = new MapperConfiguration(cfg =>
 {
     cfg.AddProfile<MappingProfile>();
 });
-var mapper = mapperConfig.CreateMapper();
-builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -39,6 +43,11 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "deleteConfirmed",
+    pattern: "VehicleMakes/DeleteConfirmed",
+    defaults: new { controller = "VehicleMakes", action = "DeleteConfirmed" });
 
 app.MapControllerRoute(
     name: "default",

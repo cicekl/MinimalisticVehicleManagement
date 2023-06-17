@@ -6,9 +6,11 @@ C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\De
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\Project.Service.runtimeconfig.json
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\Project.Service.dll
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\Project.Service.pdb
+C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\AutoMapper.dll
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\Azure.Core.dll
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\Azure.Identity.dll
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\Humanizer.dll
+C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\JetBrains.Annotations.dll
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
@@ -48,6 +50,8 @@ C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\De
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\System.Text.Encodings.Web.dll
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\System.Text.Json.dll
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\System.Windows.Extensions.dll
+C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\X.PagedList.dll
+C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\X.PagedList.Mvc.Core.dll
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
@@ -66,6 +70,7 @@ C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\obj\De
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\obj\Debug\net6.0\Project.Service.AssemblyInfoInputs.cache
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\obj\Debug\net6.0\Project.Service.AssemblyInfo.cs
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\obj\Debug\net6.0\Project.Service.csproj.CoreCompileInputs.cache
+C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\obj\Debug\net6.0\Project.Service.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\obj\Debug\net6.0\Project.Service.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\obj\Debug\net6.0\Project.Service.RazorAssemblyInfo.cache
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\obj\Debug\net6.0\Project.Service.RazorAssemblyInfo.cs

@@ -8,8 +8,7 @@ namespace Project.Service.DataAccess
     {
         private readonly IConfiguration _configuration;
 
-        public VehicleDBContext(DbContextOptions<VehicleDBContext> options, IConfiguration configuration)
-            : base(options)
+        public VehicleDBContext(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -20,6 +19,12 @@ namespace Project.Service.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<VehicleMake>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd();
+            });
+
 
             // Configure your model relationships, constraints, etc. here
         }
