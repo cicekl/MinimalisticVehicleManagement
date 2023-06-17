@@ -27,10 +27,22 @@ namespace Project.MVC.Controllers
         }
 
         // GET: VehicleMakes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-              var vehicleMakes = await _vehicleService.GetAllVehicleMakes();
-              var mappedVehicleMakes = _mapper.Map<List<VehicleMakeViewModel>>(vehicleMakes);
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            var vehicleMakes = await _vehicleService.GetAllVehicleMakes();
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    vehicleMakes = vehicleMakes.OrderByDescending(make => make.Name).ToList();
+                    break;
+                default:
+                    vehicleMakes = vehicleMakes.OrderBy(make => make.Name).ToList();
+                    break;
+            }
+
+            var mappedVehicleMakes = _mapper.Map<List<VehicleMakeViewModel>>(vehicleMakes);
               return View(mappedVehicleMakes);
         }
 
