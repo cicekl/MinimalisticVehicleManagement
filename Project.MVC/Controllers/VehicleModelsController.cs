@@ -27,12 +27,18 @@ namespace Project.MVC.Controllers
         }
 
         // GET: VehicleModels
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["MakeNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "make_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
 
             var viewModels = await _vehicleService.GetAllVehicleModels();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                viewModels = viewModels.Where(s => s.Make.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+            }
 
             switch (sortOrder)
             {

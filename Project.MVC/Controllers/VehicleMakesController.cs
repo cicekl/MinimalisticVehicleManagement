@@ -27,11 +27,19 @@ namespace Project.MVC.Controllers
         }
 
         // GET: VehicleMakes
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+
 
             var vehicleMakes = await _vehicleService.GetAllVehicleMakes();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                vehicleMakes = vehicleMakes.Where(s => s.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+            }
+
             switch (sortOrder)
             {
                 case "name_desc":
