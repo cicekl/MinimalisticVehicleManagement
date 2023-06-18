@@ -9,6 +9,6 @@ namespace Project.Service.Models
         public string Name { get; set; }
         [Required(ErrorMessage = "The Abbreviation field is required.")]
         public string Abrv { get; set; }
-        public List<VehicleModelViewModel>? VehicleModels { get; set; }
+        public List<VehicleModel>? Models { get; set; }
     }
 }

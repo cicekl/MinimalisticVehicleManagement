@@ -6,7 +6,7 @@
 
 <h1>Edit</h1>
 
-<h4>VehicleModel</h4>
+<h4>Vehicle Model</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,7 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="MakeId" class="control-label"></label>
+                <label asp-for="MakeId" class="control-label">Make</label>
                 <select asp-for="MakeId" class="form-control" asp-items="ViewBag.MakeId"></select>
                 <span asp-validation-for="MakeId" class="text-danger"></span>
             </div>

@@ -1,8 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Ninject.Modules;
+﻿using Ninject.Modules;
 using Ninject.Web.Common;
-using Project.MVC.Mapping;
 using Project.Service.DataAccess;
 using Project.Service.Services;
 
@@ -19,7 +16,6 @@ namespace Project.MVC.DependencyInjection
                      .Build())
                  .InSingletonScope();
             Bind<VehicleDBContext>().ToSelf().InRequestScope();
-          //  Bind<IMapper>().To<Mapper>().InSingletonScope();
             Bind<IVehicleService>().To<VehicleService>().InRequestScope();
         }
     }

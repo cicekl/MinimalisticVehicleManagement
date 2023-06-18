@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Project.MVC.Paging;
 using Project.Service.DataAccess;
 using Project.Service.Models;
 using Project.Service.Services;
@@ -91,8 +90,7 @@ namespace Project.MVC.Controllers
         }
 
         // POST: VehicleMakes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Abrv")] VehicleMake vehicleMake)
@@ -125,8 +123,7 @@ namespace Project.MVC.Controllers
         }
 
         // POST: VehicleMakes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Abrv")] VehicleMakeViewModel viewMake)

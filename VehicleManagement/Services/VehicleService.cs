@@ -1,21 +1,17 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Project.Service.DataAccess;
 using Project.Service.Models;
-using Project.Service.Exceptions;
-using X.PagedList;
 
 namespace Project.Service.Services
 {
     public class VehicleService : IVehicleService
     {
         private readonly VehicleDBContext _dbContext;
-        private readonly IMapper _mapper;
 
-        public VehicleService(VehicleDBContext dbContext, IMapper mapper)
+
+        public VehicleService(VehicleDBContext dbContext)
         {
             _dbContext = dbContext;
-            _mapper = mapper;
         }
 
         //VEHICLE MAKES METHODS
@@ -48,7 +44,9 @@ namespace Project.Service.Services
 
         public async Task<VehicleMake> GetMakeDetails(int? id)
         {
-            return await _dbContext.VehicleMake.FirstOrDefaultAsync(m => m.Id == id);
+            return await _dbContext.VehicleMake
+                .Include(make => make.Models)
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
 
         public async Task DeleteVehicleMake(int id)
