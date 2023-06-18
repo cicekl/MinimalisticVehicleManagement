@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Project.Service.DataAccess;
 using Project.Service.Models;
 using Project.Service.Exceptions;
+using X.PagedList;
 
 namespace Project.Service.Services
 {
@@ -19,8 +20,8 @@ namespace Project.Service.Services
 
         //VEHICLE MAKES METHODS
 
-        public async Task<List<VehicleMake>> GetAllVehicleMakes()
-        {
+          public async Task<List<VehicleMake>> GetAllVehicleMakes()
+          {
             return await _dbContext.VehicleMake.ToListAsync();
         }
 

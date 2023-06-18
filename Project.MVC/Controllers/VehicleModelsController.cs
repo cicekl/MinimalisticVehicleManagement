@@ -10,6 +10,7 @@ using Project.MVC.DependencyInjection;
 using Project.Service.DataAccess;
 using Project.Service.Models;
 using Project.Service.Services;
+using X.PagedList;
 
 namespace Project.MVC.Controllers
 {
@@ -27,39 +28,47 @@ namespace Project.MVC.Controllers
         }
 
         // GET: VehicleModels
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["MakeNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "make_desc" : "";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
             ViewData["CurrentFilter"] = searchString;
 
-            var viewModels = await _vehicleService.GetAllVehicleModels();
+            var vehicleModels = await _vehicleService.GetAllVehicleModels();
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                viewModels = viewModels.Where(s => s.Make.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+                vehicleModels = vehicleModels.Where(s => s.Make.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
             }
 
             switch (sortOrder)
             {
                 case "name_desc":
-                    viewModels = viewModels.OrderByDescending(s => s.Name).ToList();
-                    break;
-                case "make_desc":
-                    viewModels = viewModels.OrderBy(s => s.Make.Name).ToList();
-                    break;
-                case "":
-                    viewModels = viewModels.OrderByDescending(s => s.Make.Name).ToList();
+                    vehicleModels = vehicleModels.OrderByDescending(s => s.Name).ToList();
                     break;
                 default:
-                    viewModels = viewModels.OrderBy(s => s.Name).ToList();
+                    vehicleModels = vehicleModels.OrderBy(s => s.Name).ToList();
                     break;
             }
 
+            int pageSize = 5;
+            var mappedVehicleModels = _mapper.Map<List<VehicleModelViewModel>>(vehicleModels);
 
-            var mappedViewModels = _mapper.Map<List<VehicleModelViewModel>>(viewModels);
-            return View(mappedViewModels);
+            IPagedList<VehicleModelViewModel> pagedVehicleModels = mappedVehicleModels.ToPagedList(pageNumber.GetValueOrDefault(1), pageSize);
+            return View(pagedVehicleModels);
         }
+
+
 
         // GET: VehicleModels/Details/5
         public async Task<IActionResult> Details(int? id)

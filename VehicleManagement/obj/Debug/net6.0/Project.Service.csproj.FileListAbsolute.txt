@@ -90,3 +90,5 @@ C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\obj\De
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\obj\Debug\net6.0\Project.Service.pdb
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\obj\Debug\net6.0\Project.Service.genruntimeconfig.cache
 C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\obj\Debug\net6.0\ref\Project.Service.dll
+C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\PagedList.dll
+C:\Users\Lorena\Documents\MinimalisticVehicleManagement\VehicleManagement\bin\Debug\net6.0\PagedList.Mvc.dll

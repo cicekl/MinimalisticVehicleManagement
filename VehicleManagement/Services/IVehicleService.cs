@@ -5,7 +5,7 @@ namespace Project.Service.Services
     {
 
         //VEHICLE MAKE
-        Task<List<VehicleMake>> GetAllVehicleMakes();
+         Task<List<VehicleMake>> GetAllVehicleMakes(); 
         Task<VehicleMake> GetVehicleMakeById(int? id);
         Task<VehicleMake> GetMakeDetails(int? id);
         Task CreateVehicleMake(VehicleMake vehicleMake);

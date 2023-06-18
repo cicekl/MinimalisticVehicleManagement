@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Project.MVC.DependencyInjection;
+using Project.MVC.Paging;
 using Project.Service.DataAccess;
 using Project.Service.Models;
 using Project.Service.Services;
+using X.PagedList;
 
 namespace Project.MVC.Controllers
 {
@@ -27,9 +23,20 @@ namespace Project.MVC.Controllers
         }
 
         // GET: VehicleMakes
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
             ViewData["CurrentFilter"] = searchString;
 
 
@@ -50,8 +57,13 @@ namespace Project.MVC.Controllers
                     break;
             }
 
+            int pageSize = 5;
             var mappedVehicleMakes = _mapper.Map<List<VehicleMakeViewModel>>(vehicleMakes);
-              return View(mappedVehicleMakes);
+
+            IPagedList<VehicleMakeViewModel> pagedVehicleMakes = mappedVehicleMakes.ToPagedList(pageNumber.GetValueOrDefault(1), pageSize);
+            return View(pagedVehicleMakes);
+
+
         }
 
         // GET: VehicleMakes/Details/5
@@ -183,7 +195,7 @@ namespace Project.MVC.Controllers
 
         private bool VehicleMakeExists(int id)
         {
-          return (_context.VehicleMake?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.VehicleMake?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
