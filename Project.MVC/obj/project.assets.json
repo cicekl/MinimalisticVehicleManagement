@@ -4034,24 +4034,22 @@
           "Microsoft.AspNetCore.App"
         ]
       },
-      "Project.Service/1.0.0": {
+      "Project.Services/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "AutoMapper": "12.0.1",
           "Microsoft.EntityFrameworkCore": "7.0.5",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.5",
+          "Microsoft.Extensions.Configuration.Abstractions": "7.0.0",
+          "X.PagedList": "8.4.7",
           "X.PagedList.Mvc.Core": "8.4.7"
         },
         "compile": {
-          "bin/placeholder/Project.Service.dll": {}
+          "bin/placeholder/Project.Services.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Project.Service.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
+          "bin/placeholder/Project.Services.dll": {}
+        }
       }
     }
   },
@@ -11458,10 +11456,10 @@
         "x.pagedlist.mvc.core.nuspec"
       ]
     },
-    "Project.Service/1.0.0": {
+    "Project.Services/1.0.0": {
       "type": "project",
-      "path": "../VehicleManagement/Project.Service.csproj",
-      "msbuildProject": "../VehicleManagement/Project.Service.csproj"
+      "path": "../Project.Services/Project.Services.csproj",
+      "msbuildProject": "../Project.Services/Project.Services.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -11474,7 +11472,7 @@
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 6.0.14",
       "Ninject >= 3.3.6",
       "Ninject.Web.Common >= 3.3.2",
-      "Project.Service >= 1.0.0",
+      "Project.Services >= 1.0.0",
       "System.Linq >= 4.3.0",
       "X.PagedList.Mvc.Core >= 8.4.7"
     ]
@@ -11513,8 +11511,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Lorena\\Documents\\MinimalisticVehicleManagement\\VehicleManagement\\Project.Service.csproj": {
-              "projectPath": "C:\\Users\\Lorena\\Documents\\MinimalisticVehicleManagement\\VehicleManagement\\Project.Service.csproj"
+            "C:\\Users\\Lorena\\Documents\\MinimalisticVehicleManagement\\Project.Services\\Project.Services.csproj": {
+              "projectPath": "C:\\Users\\Lorena\\Documents\\MinimalisticVehicleManagement\\Project.Services\\Project.Services.csproj"
             }
           }
         }

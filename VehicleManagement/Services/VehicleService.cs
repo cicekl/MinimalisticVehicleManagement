@@ -16,10 +16,10 @@ namespace Project.Service.Services
 
         //VEHICLE MAKES METHODS
 
-          public async Task<List<VehicleMake>> GetAllVehicleMakes()
+        public async Task<List<VehicleMake>> GetAllVehicleMakes()
           {
             return await _dbContext.VehicleMake.ToListAsync();
-        }
+        } 
 
         public async Task<VehicleMake> GetVehicleMakeById(int? id)
         {

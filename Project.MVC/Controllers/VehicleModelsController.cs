@@ -3,9 +3,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Project.Service.DataAccess;
-using Project.Service.Models;
-using Project.Service.Services;
+using Project.MVC.Models;
+using Project.Services.DataAccess;
+using Project.Services.Models;
+using Project.Services.Services;
 using X.PagedList;
 
 namespace Project.MVC.Controllers
@@ -13,13 +14,13 @@ namespace Project.MVC.Controllers
     public class VehicleModelsController : Controller
     {
         private readonly VehicleDBContext _dbContext;
-        private readonly IVehicleService   _vehicleService;
+        private readonly IModelService   _modelService;
         private IMapper _mapper;
 
-        public VehicleModelsController(VehicleDBContext context,IVehicleService vehicleService,IMapper mapper)
+        public VehicleModelsController(VehicleDBContext context,IModelService modelService,IMapper mapper)
         {
             _dbContext = context;
-            _vehicleService = vehicleService;
+            _modelService  = modelService;
             _mapper = mapper;
         }
 
@@ -40,7 +41,7 @@ namespace Project.MVC.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
-            var vehicleModels = await _vehicleService.GetAllVehicleModels();
+            var vehicleModels = await _modelService.GetAllVehicleModels();
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -74,7 +75,7 @@ namespace Project.MVC.Controllers
                 return NotFound();
             }
 
-            var vehicleModel = await _vehicleService.GetModelDetails(id);
+            var vehicleModel = await _modelService.GetModelDetails(id);
 
             if (vehicleModel == null)
             {
@@ -99,7 +100,7 @@ namespace Project.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-              await _vehicleService.CreateVehicleModel(vehicleModel);   
+              await _modelService.CreateVehicleModel(vehicleModel);   
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MakeId"] = new SelectList(_dbContext.VehicleMake, "Id", "Name", vehicleModel.MakeId);
@@ -115,7 +116,7 @@ namespace Project.MVC.Controllers
                 return NotFound();
             }
 
-            var vehicleModel = await _vehicleService.GetVehicleModelById(id);
+            var vehicleModel = await _modelService.GetVehicleModelById(id);
 
             if (vehicleModel == null)
             {
@@ -143,7 +144,7 @@ namespace Project.MVC.Controllers
             {
                 try
                 {
-                   await _vehicleService.UpdateVehicleModel(vehicleModel);
+                   await _modelService.UpdateVehicleModel(vehicleModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -171,7 +172,7 @@ namespace Project.MVC.Controllers
                 return NotFound();
             }
 
-            var vehicleModel = await _vehicleService.GetModelDetails(id);
+            var vehicleModel = await _modelService.GetModelDetails(id);
 
             if (vehicleModel == null)
             {
@@ -189,9 +190,9 @@ namespace Project.MVC.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
          
-            var vehicleModel = await _vehicleService.GetVehicleModelById(id);
+            var vehicleModel = await _modelService.GetVehicleModelById(id);
 
-           await _vehicleService.DeleteVehicleModel(vehicleModel.Id);
+           await _modelService.DeleteVehicleModel(vehicleModel.Id);
 
             return RedirectToAction(nameof(Index)); 
         }

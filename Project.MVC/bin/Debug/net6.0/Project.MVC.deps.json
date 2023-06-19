@@ -16,7 +16,7 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "6.0.14",
           "Ninject": "3.3.6",
           "Ninject.Web.Common": "3.3.2",
-          "Project.Service": "1.0.0",
+          "Project.Services": "1.0.0",
           "System.Linq": "4.3.0",
           "X.PagedList.Mvc.Core": "8.4.7"
         },
@@ -2719,15 +2719,16 @@
           }
         }
       },
-      "Project.Service/1.0.0": {
+      "Project.Services/1.0.0": {
         "dependencies": {
-          "AutoMapper": "12.0.1",
           "Microsoft.EntityFrameworkCore": "7.0.5",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.5",
+          "Microsoft.Extensions.Configuration.Abstractions": "7.0.0",
+          "X.PagedList": "8.4.7",
           "X.PagedList.Mvc.Core": "8.4.7"
         },
         "runtime": {
-          "Project.Service.dll": {}
+          "Project.Services.dll": {}
         }
       }
     }
@@ -4362,7 +4363,7 @@
       "path": "x.pagedlist.mvc.core/8.4.7",
       "hashPath": "x.pagedlist.mvc.core.8.4.7.nupkg.sha512"
     },
-    "Project.Service/1.0.0": {
+    "Project.Services/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

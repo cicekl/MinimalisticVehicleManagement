@@ -1,12 +1,20 @@
 ﻿using AutoMapper;
-using Project.Service.Models;
-namespace Project.MVC.Mapping
+using Project.MVC.Models;
+using Project.Services.Models;
+using X.PagedList;
+
+namespace Project.MVC.Mapping;
+
+public class MappingProfile: Profile
 {
-    public class MappingProfile: Profile
-    {
-        public MappingProfile() {
-            CreateMap<VehicleMake, VehicleMakeViewModel>().ReverseMap();
-            CreateMap<VehicleModel, VehicleModelViewModel>().ReverseMap();
-        }
+    public MappingProfile() {
+        CreateMap<VehicleMake, VehicleMakeViewModel>().ReverseMap();
+        CreateMap<VehicleModel, VehicleModelViewModel>().ReverseMap();
+        CreateMap<IPagedList<VehicleMake>, IPagedList<VehicleMakeViewModel>>()
+               .ConvertUsing((source, destination, context) =>
+               {
+                   var mappedList = context.Mapper.Map<IEnumerable<VehicleMakeViewModel>>(source);
+                   return new StaticPagedList<VehicleMakeViewModel>(mappedList, source.GetMetaData());
+               });
     }
 }

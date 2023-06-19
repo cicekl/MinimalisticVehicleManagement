@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Project.Service.DataAccess;
-using Project.Service.Models;
-using Project.Service.Services;
+using Project.MVC.Models;
+using Project.Services.DataAccess;
+using Project.Services.Models;
+using Project.Services.Services;
+using Project.Services.Utilities;
 using X.PagedList;
 
 namespace Project.MVC.Controllers
@@ -11,58 +13,49 @@ namespace Project.MVC.Controllers
     public class VehicleMakesController : Controller
     {
         private readonly VehicleDBContext _context;
-        private readonly IVehicleService _vehicleService;
+        private readonly IMakeService _makeService;
         private readonly IMapper _mapper;
 
-        public VehicleMakesController(VehicleDBContext context, IVehicleService vehicleService, IMapper mapper)
+        public VehicleMakesController(VehicleDBContext context, IMakeService makeService, IMapper mapper)
         {
             _context = context;
-            _vehicleService = vehicleService;
+            _makeService = makeService;
             _mapper = mapper;
         }
 
         // GET: VehicleMakes
-        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+        public async Task<IActionResult> Index(SortingParameters sortingParameters,FilteringParameters filteringParameters, PagingParameters pagingParameters)
         {
-            ViewData["CurrentSort"] = sortOrder;
-            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
-            if (searchString != null)
+            UpdatePageNumber(filteringParameters, pagingParameters);
+
+            ViewData["CurrentSort"] = sortingParameters.sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortingParameters.sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = filteringParameters.searchString;
+
+
+            var vehicleMakes = await _makeService.GetAllVehicleMakes();
+
+            vehicleMakes = await _makeService.FilterMakesAsync(vehicleMakes, filteringParameters);
+
+           vehicleMakes= await _makeService.SortMakesAsync(vehicleMakes, sortingParameters);
+
+            IPagedList<VehicleMake> pagedVehicleMakes = await _makeService.PageMakesAsync(vehicleMakes, pagingParameters);
+            var mappedMakes = _mapper.Map<IPagedList<VehicleMakeViewModel>>(pagedVehicleMakes);
+            return View(mappedMakes);
+
+        }
+
+        private void UpdatePageNumber(FilteringParameters filteringParameters, PagingParameters pagingParameters)
+        {
+            if (!string.IsNullOrEmpty(filteringParameters.searchString))
             {
-                pageNumber = 1;
+                pagingParameters.pageNumber = 1;
             }
             else
             {
-                searchString = currentFilter;
+                filteringParameters.searchString = pagingParameters.currentFilter;
             }
-
-            ViewData["CurrentFilter"] = searchString;
-
-
-            var vehicleMakes = await _vehicleService.GetAllVehicleMakes();
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                vehicleMakes = vehicleMakes.Where(s => s.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
-            }
-
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    vehicleMakes = vehicleMakes.OrderByDescending(make => make.Name).ToList();
-                    break;
-                default:
-                    vehicleMakes = vehicleMakes.OrderBy(make => make.Name).ToList();
-                    break;
-            }
-
-            int pageSize = 5;
-            var mappedVehicleMakes = _mapper.Map<List<VehicleMakeViewModel>>(vehicleMakes);
-
-            IPagedList<VehicleMakeViewModel> pagedVehicleMakes = mappedVehicleMakes.ToPagedList(pageNumber.GetValueOrDefault(1), pageSize);
-            return View(pagedVehicleMakes);
-
-
         }
 
         // GET: VehicleMakes/Details/5
@@ -73,7 +66,7 @@ namespace Project.MVC.Controllers
                 return NotFound();
             }
 
-            var vehicleMake = await _vehicleService.GetMakeDetails(id);
+            var vehicleMake = await _makeService.GetMakeDetails(id);
 
             if (vehicleMake == null)
             {
@@ -97,7 +90,7 @@ namespace Project.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _vehicleService.CreateVehicleMake(vehicleMake);
+                await _makeService.CreateVehicleMake(vehicleMake);
                 return RedirectToAction(nameof(Index));
             }
             var viewMake = _mapper.Map<VehicleMakeViewModel>(vehicleMake);
@@ -112,7 +105,7 @@ namespace Project.MVC.Controllers
                 return NotFound();
             }
 
-            var vehicleMake = await _vehicleService.GetVehicleMakeById(id);
+            var vehicleMake = await _makeService.GetVehicleMakeById(id);
 
             if (vehicleMake == null)
             {
@@ -139,7 +132,7 @@ namespace Project.MVC.Controllers
             {
                 try
                 {
-                    await _vehicleService.UpdateVehicleMake(vehicleMake);
+                    await _makeService.UpdateVehicleMake(vehicleMake);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -166,7 +159,7 @@ namespace Project.MVC.Controllers
                 return NotFound();
             }
 
-            var vehicleMake = await _vehicleService.GetMakeDetails(id);
+            var vehicleMake = await _makeService.GetMakeDetails(id);
 
             if (vehicleMake == null)
             {
@@ -183,9 +176,9 @@ namespace Project.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var vehicleMake = await _vehicleService.GetVehicleMakeById(id);
+            var vehicleMake = await _makeService.GetVehicleMakeById(id);
 
-            await _vehicleService.DeleteVehicleMake(vehicleMake.Id);
+            await _makeService.DeleteVehicleMake(vehicleMake.Id);
 
             return RedirectToAction(nameof(Index));
         }
