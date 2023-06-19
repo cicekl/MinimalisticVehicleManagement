@@ -7,6 +7,7 @@ using Project.MVC.Models;
 using Project.Services.DataAccess;
 using Project.Services.Models;
 using Project.Services.Services;
+using Project.Services.Utilities;
 using X.PagedList;
 
 namespace Project.MVC.Controllers
@@ -25,44 +26,36 @@ namespace Project.MVC.Controllers
         }
 
         // GET: VehicleModels
-        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+        public async Task<IActionResult> Index(SortingParameters sortingParameters, FilteringParameters filteringParameters, PagingParameters pagingParameters)
         {
-            ViewData["CurrentSort"] = sortOrder;
-            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
-            if (searchString != null)
-            {
-                pageNumber = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
+            UpdatePageNumber(filteringParameters, pagingParameters);
 
-            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentSort"] = sortingParameters.sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortingParameters.sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = filteringParameters.searchString;
 
             var vehicleModels = await _modelService.GetAllVehicleModels();
 
-            if (!String.IsNullOrEmpty(searchString))
+            vehicleModels = await _modelService.FilterModelsAsync(vehicleModels, filteringParameters);
+
+            vehicleModels = await _modelService.SortModelsAsync(vehicleModels, sortingParameters);
+
+            IPagedList<VehicleModel> pagedVehicleModels = await _modelService.PageModelsAsync(vehicleModels, pagingParameters);
+            var mappedModels = _mapper.Map<IPagedList<VehicleModelViewModel>>(pagedVehicleModels);
+            return View(mappedModels);
+        }
+
+        private void UpdatePageNumber(FilteringParameters filteringParameters, PagingParameters pagingParameters)
+        {
+            if (!string.IsNullOrEmpty(filteringParameters.searchString))
             {
-                vehicleModels = vehicleModels.Where(s => s.Make.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+                pagingParameters.pageNumber = 1;
             }
-
-            switch (sortOrder)
+            else
             {
-                case "name_desc":
-                    vehicleModels = vehicleModels.OrderByDescending(s => s.Name).ToList();
-                    break;
-                default:
-                    vehicleModels = vehicleModels.OrderBy(s => s.Name).ToList();
-                    break;
+                filteringParameters.searchString = pagingParameters.currentFilter;
             }
-
-            int pageSize = 5;
-            var mappedVehicleModels = _mapper.Map<List<VehicleModelViewModel>>(vehicleModels);
-
-            IPagedList<VehicleModelViewModel> pagedVehicleModels = mappedVehicleModels.ToPagedList(pageNumber.GetValueOrDefault(1), pageSize);
-            return View(pagedVehicleModels);
         }
 
 

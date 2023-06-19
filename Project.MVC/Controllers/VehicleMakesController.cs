@@ -38,12 +38,11 @@ namespace Project.MVC.Controllers
 
             vehicleMakes = await _makeService.FilterMakesAsync(vehicleMakes, filteringParameters);
 
-           vehicleMakes= await _makeService.SortMakesAsync(vehicleMakes, sortingParameters);
+            vehicleMakes= await _makeService.SortMakesAsync(vehicleMakes, sortingParameters);
 
             IPagedList<VehicleMake> pagedVehicleMakes = await _makeService.PageMakesAsync(vehicleMakes, pagingParameters);
             var mappedMakes = _mapper.Map<IPagedList<VehicleMakeViewModel>>(pagedVehicleMakes);
             return View(mappedMakes);
-
         }
 
         private void UpdatePageNumber(FilteringParameters filteringParameters, PagingParameters pagingParameters)

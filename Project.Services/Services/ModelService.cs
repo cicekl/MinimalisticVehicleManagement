@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Project.Services.DataAccess;
 using Project.Services.Models;
+using Project.Services.Utilities;
+using X.PagedList;
 
 namespace Project.Services.Services
 {
@@ -59,6 +62,36 @@ namespace Project.Services.Services
                 _dbContext.VehicleModel.Remove(vehicleModel);
                 await _dbContext.SaveChangesAsync();
             }
+        }
+
+        public Task<List<VehicleModel>> SortModelsAsync(List<VehicleModel> models, SortingParameters sortingParams)
+        {
+            switch (sortingParams.sortOrder)
+            {
+                case "name_desc":
+                    return Task.FromResult(models.OrderByDescending(model => model.Name).ToList());
+                default:
+                    return Task.FromResult(models.OrderBy(model => model.Name).ToList());
+            }
+        }
+
+        public Task<List<VehicleModel>> FilterModelsAsync(List<VehicleModel> models, FilteringParameters filteringParams)
+        {
+            if (!String.IsNullOrEmpty(filteringParams.searchString))
+            {
+                return Task.FromResult(models.Where(s => s.Make.Name.IndexOf(filteringParams.searchString, StringComparison.OrdinalIgnoreCase) >= 0).ToList());
+            }
+            else
+            {
+                return Task.FromResult(models.ToList());
+            }
+        }
+
+        public Task<IPagedList<VehicleModel>> PageModelsAsync(List<VehicleModel> models, PagingParameters pagingParameters)
+        {
+            pagingParameters.pageSize = 5;
+            var pagedVehicleModels = models.ToPagedList(pagingParameters.pageNumber.GetValueOrDefault(1), pagingParameters.pageSize);
+            return Task.FromResult(pagedVehicleModels);
         }
     }
 }

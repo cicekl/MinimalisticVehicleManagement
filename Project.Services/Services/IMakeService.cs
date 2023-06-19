@@ -16,6 +16,6 @@ namespace Project.Services.Services
         //UTILITIES
         Task<List<VehicleMake>> SortMakesAsync(List<VehicleMake> makes, SortingParameters sortingParams);
         Task<List<VehicleMake>> FilterMakesAsync(List<VehicleMake> makes, FilteringParameters filteringParams);
-        Task<IPagedList<VehicleMake>> PageMakesAsync(List<VehicleMake> viewMakes, PagingParameters pagingParameters);
+        Task<IPagedList<VehicleMake>> PageMakesAsync(List<VehicleMake> models, PagingParameters pagingParameters);
     }
 }

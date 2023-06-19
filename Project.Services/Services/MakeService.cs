@@ -83,10 +83,10 @@ namespace Project.Services.Services
             }
         }
 
-        public Task<IPagedList<VehicleMake>> PageMakesAsync(List<VehicleMake> viewMakes, PagingParameters pagingParameters)
+        public Task<IPagedList<VehicleMake>> PageMakesAsync(List<VehicleMake> makes, PagingParameters pagingParameters)
         {
             pagingParameters.pageSize = 5;
-            var pagedVehicleMakes = viewMakes.ToPagedList(pagingParameters.pageNumber.GetValueOrDefault(1), pagingParameters.pageSize);
+            var pagedVehicleMakes = makes.ToPagedList(pagingParameters.pageNumber.GetValueOrDefault(1), pagingParameters.pageSize);
             return Task.FromResult(pagedVehicleMakes);
         }
 
