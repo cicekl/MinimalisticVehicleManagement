@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Project.Services.DataAccess;
 using Project.Services.Models;
-using Project.Services.Utilities;
-using X.PagedList;
 
 namespace Project.Services.Services
 {
@@ -58,36 +56,6 @@ namespace Project.Services.Services
                 _dbContext.VehicleMake.Remove(vehicleMake);
                 await _dbContext.SaveChangesAsync();
             }
-        }
-
-        public Task<List<VehicleMake>> SortMakesAsync(List<VehicleMake> makes, SortingParameters sortingParams)
-        {
-            switch (sortingParams.sortOrder)
-            {
-                case "name_desc":
-                    return Task.FromResult(makes.OrderByDescending(make => make.Name).ToList());
-                default:
-                    return Task.FromResult(makes.OrderBy(make => make.Name).ToList());
-            }
-        }
-
-        public Task<List<VehicleMake>> FilterMakesAsync(List<VehicleMake> makes, FilteringParameters filteringParams)
-        {
-            if (!String.IsNullOrEmpty(filteringParams.searchString))
-            {
-                return Task.FromResult(makes.Where(s => s.Name.IndexOf(filteringParams.searchString, StringComparison.OrdinalIgnoreCase) >= 0).ToList());
-            }
-            else
-            {
-                return Task.FromResult(makes);
-            }
-        }
-
-        public Task<IPagedList<VehicleMake>> PageMakesAsync(List<VehicleMake> makes, PagingParameters pagingParameters)
-        {
-            pagingParameters.pageSize = 5;
-            var pagedVehicleMakes = makes.ToPagedList(pagingParameters.pageNumber.GetValueOrDefault(1), pagingParameters.pageSize);
-            return Task.FromResult(pagedVehicleMakes);
         }
 
 

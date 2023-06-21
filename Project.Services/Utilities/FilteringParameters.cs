@@ -8,6 +8,6 @@ namespace Project.Services.Utilities
 {
     public class FilteringParameters
     {
-        public string searchString { get; set; }
+        public string SearchString { get; set; }
     }
 }

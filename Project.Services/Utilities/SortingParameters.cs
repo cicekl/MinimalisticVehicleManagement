@@ -8,6 +8,6 @@ namespace Project.Services.Utilities
 {
     public class SortingParameters
     {
-        public string sortOrder { get; set; }
+        public string SortOrder { get; set; }
     }
 }

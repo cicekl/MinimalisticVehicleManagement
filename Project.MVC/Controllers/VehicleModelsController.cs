@@ -31,30 +31,42 @@ namespace Project.MVC.Controllers
 
             UpdatePageNumber(filteringParameters, pagingParameters);
 
-            ViewData["CurrentSort"] = sortingParameters.sortOrder;
-            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortingParameters.sortOrder) ? "name_desc" : "";
-            ViewData["CurrentFilter"] = filteringParameters.searchString;
+            ViewData["CurrentSort"] = sortingParameters.SortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortingParameters.SortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = filteringParameters.SearchString;
 
             var vehicleModels = await _modelService.GetAllVehicleModels();
 
-            vehicleModels = await _modelService.FilterModelsAsync(vehicleModels, filteringParameters);
+            if (!string.IsNullOrEmpty(filteringParameters.SearchString))
+            {
+                vehicleModels = vehicleModels.Where(m => m.Make.Name.IndexOf(filteringParameters.SearchString, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+            }
 
-            vehicleModels = await _modelService.SortModelsAsync(vehicleModels, sortingParameters);
+            switch (sortingParameters.SortOrder)
+            {
+                case "name_desc":
+                    vehicleModels = vehicleModels.OrderByDescending(m => m.Name).ToList();
+                    break;
+                default:
+                    vehicleModels = vehicleModels.OrderBy(m => m.Name).ToList();
+                    break;
+            }
 
-            IPagedList<VehicleModel> pagedVehicleModels = await _modelService.PageModelsAsync(vehicleModels, pagingParameters);
+            pagingParameters.PageSize = 5;
+            var pagedVehicleModels = vehicleModels.ToPagedList(pagingParameters.PageNumber.GetValueOrDefault(1), pagingParameters.PageSize);
             var mappedModels = _mapper.Map<IPagedList<VehicleModelViewModel>>(pagedVehicleModels);
             return View(mappedModels);
         }
 
         private void UpdatePageNumber(FilteringParameters filteringParameters, PagingParameters pagingParameters)
         {
-            if (!string.IsNullOrEmpty(filteringParameters.searchString))
+            if (!string.IsNullOrEmpty(filteringParameters.SearchString))
             {
-                pagingParameters.pageNumber = 1;
+                pagingParameters.PageNumber = 1;
             }
             else
             {
-                filteringParameters.searchString = pagingParameters.currentFilter;
+                filteringParameters.SearchString = pagingParameters.CurrentFilter;
             }
         }
 
